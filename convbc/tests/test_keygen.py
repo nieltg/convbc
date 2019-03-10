@@ -12,3 +12,7 @@ def test_key_generator_with_multidimensional_ndarray_as_seed():
     seed = np.arange(2, dtype=np.uint8).reshape(-1, 1)
     with pytest.raises(Exception):
         keygen.KeyGenerator(seed)
+
+def test_key_generator_with_seed():
+    seed = np.arange(2, dtype=np.uint8)
+    assert keygen.KeyGenerator(seed) is not None

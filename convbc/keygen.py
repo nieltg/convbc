@@ -1,2 +1,4 @@
 def KeyGenerator(seed):
-    raise Exception()
+    if seed.ndim != 1:
+        raise Exception()
+    return object()
