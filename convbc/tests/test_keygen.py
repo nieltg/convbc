@@ -32,7 +32,7 @@ def _test_iterator_produces_n_values(iter, n):
 
 def test_key_generator_with_seed():
     seed = np.arange(2, dtype=np.uint8)
-    assert keygen.KeyGenerator(seed) is not None
+    _test_iterator_produces_n_values(keygen.KeyGenerator(seed), 24)
 
 def _test_key_generator_with_seed_and_length(length, n):
     seed = np.arange(2, dtype=np.uint8)
