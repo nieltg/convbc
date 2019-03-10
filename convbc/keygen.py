@@ -1,2 +1,2 @@
 def KeyGenerator(seed):
-    pass
+    raise Exception()
