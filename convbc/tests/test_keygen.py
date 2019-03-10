@@ -23,23 +23,26 @@ def test_key_generator_with_non_uint8_dtyped_ndarray_as_seed():
     with pytest.raises(Exception):
         keygen.KeyGenerator(seed)
 
+def _test_iterator_produces_n_values(iter, n):
+    i = 0
+    for key in iter:
+        i = i + 1
+        assert i <= n
+    assert i == n
+
 def test_key_generator_with_seed():
     seed = np.arange(2, dtype=np.uint8)
     assert keygen.KeyGenerator(seed) is not None
 
-def _test_key_generator_with_seed_and_length(length, i_max):
+def _test_key_generator_with_seed_and_length(length, n):
     seed = np.arange(2, dtype=np.uint8)
-    i = 0
-    for key in keygen.KeyGenerator(seed, length):
-        i = i + 1
-        assert i <= i_max
-    assert i == i_max
+    _test_iterator_produces_n_values(keygen.KeyGenerator(seed, length), n)
 
 def test_key_generator_with_seed_and_negative_length():
-    _test_key_generator_with_seed_and_length(-1, i_max=0)
+    _test_key_generator_with_seed_and_length(-1, n=0)
 
 def test_key_generator_with_seed_and_length_0():
-    _test_key_generator_with_seed_and_length(0, i_max=0)
+    _test_key_generator_with_seed_and_length(0, n=0)
 
 def test_key_generator_with_seed_and_length_1():
-    _test_key_generator_with_seed_and_length(1, i_max=1)
+    _test_key_generator_with_seed_and_length(1, n=1)
