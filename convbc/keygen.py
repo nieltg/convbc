@@ -1,0 +1,2 @@
+def KeyGenerator(seed):
+    pass
