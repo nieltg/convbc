@@ -27,12 +27,16 @@ def test_key_generator_with_seed():
     seed = np.arange(2, dtype=np.uint8)
     assert keygen.KeyGenerator(seed) is not None
 
-def test_key_generator_with_seed_and_negative_length():
+def _test_key_generator_with_seed_and_length(length, i_max):
     seed = np.arange(2, dtype=np.uint8)
-    length = -1
-
-    i, i_max = 0, max(0, length)
+    i = 0
     for key in keygen.KeyGenerator(seed, length):
         i = i + 1
         assert i <= i_max
     assert i == i_max
+
+def test_key_generator_with_seed_and_negative_length():
+    _test_key_generator_with_seed_and_length(-1, i_max=0)
+
+def test_key_generator_with_seed_and_length_0():
+    _test_key_generator_with_seed_and_length(0, i_max=0)
