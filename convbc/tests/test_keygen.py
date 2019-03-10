@@ -40,3 +40,6 @@ def test_key_generator_with_seed_and_negative_length():
 
 def test_key_generator_with_seed_and_length_0():
     _test_key_generator_with_seed_and_length(0, i_max=0)
+
+def test_key_generator_with_seed_and_length_1():
+    _test_key_generator_with_seed_and_length(1, i_max=1)
