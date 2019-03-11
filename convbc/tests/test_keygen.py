@@ -36,3 +36,8 @@ def test_expand_key_with_n_negative_number():
     key = np.zeros((2, ), dtype=np.uint8)
     with pytest.raises(Exception):
         keygen.expand_key(key, -1)
+
+
+def test_expand_key_with_n_zero():
+    key = np.zeros((2, ), dtype=np.uint8)
+    assert keygen.expand_key(key, 0).shape == (0, 16)

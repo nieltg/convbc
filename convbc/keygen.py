@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def expand_key(key):
-    if key.shape[-1] % 2 != 0 or key.dtype != np.uint8:
+def expand_key(key, n=24):
+    if key.shape[-1] % 2 != 0 or key.dtype != np.uint8 or n == -1:
         raise Exception()
-    return np.zeros((24, 16))
+    return np.zeros((n, 16))
