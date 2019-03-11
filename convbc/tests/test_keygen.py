@@ -9,6 +9,11 @@ def test_flatten2d_without_key():
         keygen.flatten2d()
 
 
+def test_flatten2d_with_key_1d_array():
+    key = np.zeros((1, ))
+    assert np.array_equal(keygen.flatten2d(key), key.reshape(1, 1))
+
+
 def test_expand_key_without_seed():
     with pytest.raises(TypeError):
         keygen.expand_key()
