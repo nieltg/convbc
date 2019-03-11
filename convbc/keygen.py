@@ -3,7 +3,9 @@ import hashlib
 
 
 def flatten2d(key):
-    return key.reshape(1, 1)
+    if len(key.shape) < 2:
+        return key.reshape(1, 1)
+    return key
 
 
 def expand_key(key, n=24):
