@@ -4,7 +4,7 @@ import hashlib
 
 def flatten2d(key):
     if len(key.shape) < 2:
-        return key.reshape(1, 1)
+        return key.reshape(1, *key.shape)
     return key
 
 
