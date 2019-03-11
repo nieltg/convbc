@@ -24,6 +24,11 @@ def test_flatten2d_with_key_2d_array():
     assert np.array_equal(keygen.flatten2d(key), key)
 
 
+def test_flatten2d_with_key_3d_array():
+    key = np.zeros((1, 2, 3, ))
+    assert keygen.flatten2d(key).shape == (2, 3)
+
+
 def test_expand_key_without_seed():
     with pytest.raises(TypeError):
         keygen.expand_key()
