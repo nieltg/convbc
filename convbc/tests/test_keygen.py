@@ -32,10 +32,16 @@ def test_expand_key_with_key_non_uint8_1d_array():
         keygen.expand_key(key)
 
 
-def test_expand_key_with_n_negative_number():
+def test_expand_key_with_n_neg_1_number():
     key = np.zeros((2, ), dtype=np.uint8)
     with pytest.raises(Exception):
         keygen.expand_key(key, -1)
+
+
+def test_expand_key_with_n_neg_2_number():
+    key = np.zeros((2, ), dtype=np.uint8)
+    with pytest.raises(Exception):
+        keygen.expand_key(key, -2)
 
 
 def test_expand_key_with_n_zero():
