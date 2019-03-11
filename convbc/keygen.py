@@ -2,8 +2,8 @@ import numpy as np
 import hashlib
 
 
-def flatten(key):
-    pass
+def flatten2d(key):
+    return key
 
 
 def expand_key(key, n=24):

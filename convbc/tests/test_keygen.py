@@ -4,9 +4,9 @@ import pytest
 from .. import keygen
 
 
-def test_flatten_without_key():
+def test_flatten2d_without_key():
     with pytest.raises(TypeError):
-        keygen.flatten()
+        keygen.flatten2d()
 
 
 def test_expand_key_without_seed():
