@@ -47,3 +47,8 @@ def test_expand_key_with_n_neg_2_number():
 def test_expand_key_with_n_zero():
     key = np.zeros((2, ), dtype=np.uint8)
     assert keygen.expand_key(key, 0).shape == (0, 16)
+
+
+def test_expand_key_with_key_2d_array_and_n_1():
+    key = np.zeros((1, 2, ), dtype=np.uint8)
+    assert keygen.expand_key(key, 1).shape == (1, 1, 16)
