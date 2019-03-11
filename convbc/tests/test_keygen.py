@@ -4,6 +4,11 @@ import pytest
 from .. import keygen
 
 
+def test_flatten_without_key():
+    with pytest.raises(TypeError):
+        keygen.flatten()
+
+
 def test_expand_key_without_seed():
     with pytest.raises(TypeError):
         keygen.expand_key()
@@ -50,5 +55,8 @@ def test_expand_key_with_n_zero():
 
 
 def test_expand_key_with_key_2d_array_and_n_1():
-    key = np.zeros((1, 2, ), dtype=np.uint8)
+    key = np.zeros((
+        1,
+        2,
+    ), dtype=np.uint8)
     assert keygen.expand_key(key, 1).shape == (1, 1, 16)
