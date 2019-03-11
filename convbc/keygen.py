@@ -1,2 +1,3 @@
 def expand_key(key):
-    pass
+    if len(key) % 2 != 0:
+        raise Exception()
