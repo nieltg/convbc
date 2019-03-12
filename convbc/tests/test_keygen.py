@@ -31,10 +31,18 @@ def test_flatten2d_with_key_3d_array():
 
 def test_hash_returns_correct_array_lengths():
     flat_key = np.zeros((4,), dtype=np.uint8)
-    hash_data, hash_kernel = keygen.hash(flat_key, len(flat_key) // 2)
+    hash_data, hash_kernel = keygen.hash(flat_key)
 
     assert len(hash_data) == 25
     assert len(hash_kernel) == 4
+
+
+def test_hash_all_returns_correct_array_lengths():
+    flat_keys = np.zeros((2, 4,), dtype=np.uint8)
+    hashes_data, hashes_kernel = keygen.hash_all(flat_keys)
+
+    assert hashes_data.shape == (2, 25)
+    assert hashes_kernel.shape == (2, 4)
 
 
 def test_expand_key_without_seed():

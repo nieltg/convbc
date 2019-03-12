@@ -1,7 +1,7 @@
 import numpy as np
 import hashlib
 
-from joblib import Parallel
+from joblib import Parallel, delayed
 
 
 md4 = hashlib.new('md4')
@@ -14,12 +14,13 @@ def flatten2d(key):
         return key.reshape(np.prod(key.shape[:-1]), key.shape[-1])
 
 
-def hash(flat_key, mid):
+def hash(flat_key):
+    n_mid = len(flat_key) // 2
     key_data = flat_key.tobytes()
 
-    md4.update(key_data[:mid])
+    md4.update(key_data[:n_mid])
     hash1 = md4.digest()
-    md4.update(key_data[mid:])
+    md4.update(key_data[n_mid:])
     hash2 = md4.digest()
 
     hash_data = hash1 + hash2[:9]
@@ -29,12 +30,18 @@ def hash(flat_key, mid):
 
 
 def hash_all(flat_keys):
-    mid = flat_keys.shape[-1] // 2
+    length = len(flat_keys)
 
-    joblib.Parallel()
+    hashes_data = np.empty((length, 25))
+    hashes_kernel = np.empty((length, 4))
 
-    for flat_key in flat_keys:
-        pass
+    for i in range(0, length):
+        hash_data, hash_kernel = hash(flat_keys[i])
+
+        hashes_data[i] = np.frombuffer(hash_data, dtype=np.uint8)
+        hashes_kernel[i] = np.frombuffer(hash_kernel, dtype=np.uint8)
+
+    return (hashes_data, hashes_kernel)
 
 
 def expand_key(key, n=24):
