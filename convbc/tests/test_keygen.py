@@ -76,6 +76,10 @@ def test_calculate_padding_returns_5_if_n_9():
     assert keygen.calculate_padding(9) == 5
 
 
+def test_calculate_padding_returns_0_if_n_14():
+    assert keygen.calculate_padding(14) == 0
+
+
 def test_calculate_padding_returns_1_if_n_15():
     assert keygen.calculate_padding(15) == 1
 
