@@ -20,17 +20,17 @@ def test_flatten2d_with_key_1d_array_shape_2():
 
 
 def test_flatten2d_with_key_2d_array():
-    key = np.zeros((1, 2, ))
+    key = np.zeros((1, 2))
     assert np.array_equal(keygen.flatten2d(key), key)
 
 
 def test_flatten2d_with_key_3d_array():
-    key = np.zeros((1, 2, 3, ))
+    key = np.zeros((1, 2, 3))
     assert keygen.flatten2d(key).shape == (2, 3)
 
 
 def test_hash_returns_correct_array_lengths():
-    flat_key = np.zeros((4,), dtype=np.uint8)
+    flat_key = np.zeros((4, ), dtype=np.uint8)
     hash_data, hash_kernel = keygen.hash(flat_key)
 
     assert len(hash_data) == 25
@@ -38,11 +38,18 @@ def test_hash_returns_correct_array_lengths():
 
 
 def test_hash_all_returns_correct_array_lengths():
-    flat_keys = np.zeros((2, 4,), dtype=np.uint8)
+    flat_keys = np.zeros((2, 4), dtype=np.uint8)
     hashes_data, hashes_kernel = keygen.hash_all(flat_keys)
 
     assert hashes_data.shape == (2, 25)
     assert hashes_kernel.shape == (2, 4)
+
+
+def test_build_window_blocks_returns_correct_array_shape():
+    hashes_data = np.zeros((2, 5, 5), dtype=np.uint8)
+    blocks = keygen.build_window_blocks(hashes_data)
+
+    assert blocks.shape == (2, 4, 4, 2, 2)
 
 
 def test_expand_key_without_seed():
@@ -91,8 +98,5 @@ def test_expand_key_with_n_zero():
 
 
 def test_expand_key_with_key_2d_array_and_n_1():
-    key = np.zeros((
-        1,
-        2,
-    ), dtype=np.uint8)
+    key = np.zeros((1, 2), dtype=np.uint8)
     assert keygen.expand_key(key, 1).shape == (1, 1, 16)

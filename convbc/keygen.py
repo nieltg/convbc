@@ -3,7 +3,6 @@ import hashlib
 
 from joblib import Parallel, delayed
 
-
 md4 = hashlib.new('md4')
 
 
@@ -42,6 +41,24 @@ def hash_all(flat_keys):
         hashes_kernel[i] = np.frombuffer(hash_kernel, dtype=np.uint8)
 
     return (hashes_data, hashes_kernel)
+
+
+convo_data_shape = (5, 5)
+convo_kernel_shape = (2, 2)
+
+convo_view_shape = tuple(
+    np.subtract(convo_data_shape, convo_kernel_shape) + 1) + convo_kernel_shape
+
+
+def build_window_blocks(hashes_data):
+    length = len(hashes_data)
+    data_blocks = hashes_data.reshape(length, *convo_data_shape)
+
+    view_shape = (length, ) + convo_view_shape
+    view_strides = data_blocks.strides + data_blocks.strides[1:]
+
+    return np.lib.stride_tricks.as_strided(
+        data_blocks, view_shape, view_strides, writeable=False)
 
 
 def expand_key(key, n=24):
