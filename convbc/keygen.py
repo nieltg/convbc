@@ -51,14 +51,21 @@ convo_view_shape = tuple(
 
 
 def build_window_blocks(hashes_data):
-    length = len(hashes_data)
-    data_blocks = hashes_data.reshape(length, *convo_data_shape)
+    data_blocks = hashes_data.reshape(-1, *convo_data_shape)
 
-    view_shape = (length, ) + convo_view_shape
+    view_shape = (len(hashes_data), ) + convo_view_shape
     view_strides = data_blocks.strides + data_blocks.strides[1:]
 
     return np.lib.stride_tricks.as_strided(
         data_blocks, view_shape, view_strides, writeable=False)
+
+
+def convo2d(hashes_data, hashes_kernel):
+    kernel_blocks = hashes_kernel.reshape(-1, 1, 1, *convo_kernel_shape)
+    data_window_blocks = build_window_blocks(hashes_data)
+
+    out = np.sum(kernel_blocks * data_window_blocks, axis=(3, 4))
+    return out.reshape(-1, 16)
 
 
 def expand_key(key, n=24):

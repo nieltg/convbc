@@ -52,6 +52,14 @@ def test_build_window_blocks_returns_correct_array_shape():
     assert blocks.shape == (2, 4, 4, 2, 2)
 
 
+def test_convo2d_returns_correct_array_shape():
+    hashes_data = np.zeros((2, 25), dtype=np.uint8)
+    hashes_kernel = np.zeros((2, 4), dtype=np.uint8)
+
+    result = keygen.convo2d(hashes_data, hashes_kernel)
+    assert result.shape == (2, 16)
+
+
 def test_expand_key_without_seed():
     with pytest.raises(TypeError):
         keygen.expand_key()
