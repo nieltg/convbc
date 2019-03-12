@@ -40,14 +40,22 @@ def substitute(data):
     return s_box[data.reshape(-1)].reshape(data.shape)
 
 
-def shuffle(data, key):
+def shuffle_1(data, key):
     rd = np.random.RandomState()
     rd.seed(key)
 
-    out = np.copy(key)
-    rd.shuffle(out)
+    rd.shuffle(data)
+    return data
 
-    return out
+
+def shuffle(orig_data, keys):
+    if keys.ndim == 1:
+        data = orig_data.reshape(1, *orig_data.shape)
+        keys = keys.reshape(1, -1)
+
+    for i in range(len(data)):
+        shuffle_1(data[i], keys[i])
+    return data.reshape(orig_data.shape)
 
 
 def f(k, r):
