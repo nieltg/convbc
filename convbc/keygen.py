@@ -69,14 +69,14 @@ def convo2d(hashes_data, hashes_kernel):
     return out.reshape(-1, 16)
 
 
-def calculate_padding(n, stop=8):
-    trend = n // (stop - 1)
-    unit = n % (stop - 1)
+def calculate_padding(n, n_max=7):
+    trend = n // n_max
+    unit = n % n_max
 
     if trend % 2 == 0:
         return unit
     else:
-        return stop - unit - 1
+        return n_max - unit
 
 
 def expand_key(key, n=24):
