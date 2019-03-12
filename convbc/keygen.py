@@ -70,7 +70,7 @@ def convo2d(hashes_data, hashes_kernel):
 
 
 def calculate_padding(n, stop=8):
-    return 0
+    return n
 
 
 def expand_key(key, n=24):

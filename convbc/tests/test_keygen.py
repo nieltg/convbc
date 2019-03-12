@@ -64,6 +64,10 @@ def test_calculate_padding_returns_0_if_n_0():
     assert keygen.calculate_padding(0) == 0
 
 
+def test_calculate_padding_returns_1_if_n_1():
+    assert keygen.calculate_padding(1) == 1
+
+
 def test_expand_key_without_seed():
     with pytest.raises(TypeError):
         keygen.expand_key()
