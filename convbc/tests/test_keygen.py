@@ -72,6 +72,10 @@ def test_calculate_padding_returns_6_if_n_8():
     assert keygen.calculate_padding(8) == 6
 
 
+def test_calculate_padding_returns_5_if_n_9():
+    assert keygen.calculate_padding(9) == 5
+
+
 def test_expand_key_without_seed():
     with pytest.raises(TypeError):
         keygen.expand_key()
