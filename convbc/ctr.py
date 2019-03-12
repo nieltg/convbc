@@ -5,25 +5,27 @@ from .feistel_parallel import feistel_network, inverse_feistel_network
 from .encrypt import split_blocks, f
 
 
-def build_keys(key, blocks_len):
+def build_data_blocks(key, blocks_len):
     counter = np.arange(blocks_len, dtype='<u8').tobytes()
     counter_blocks = np.frombuffer(counter, dtype=np.uint8).reshape(-1, 8)
 
-    repeated_keys = np.tile(key, (blocks_len, 1))
-    return np.concatenate((repeated_keys, counter_blocks), axis=1)
+    trimmed_key = key[:24]
+    padded_key = np.pad(
+        trimmed_key, (0, 24 - len(trimmed_key)), mode='constant')
+    tiled_padded_key = np.tile(padded_key, (blocks_len, 1))
+
+    return np.concatenate((tiled_padded_key, counter_blocks), axis=1)
 
 
 def encrypt(data, key):
-    blocks = split_blocks(data)
-    expanded_key = expand_key(build_keys(key, len(blocks)))
+    expanded_key = expand_key(key)
 
-    data = feistel_network(f, blocks, expanded_key)
-    return data.reshape(-1)
+    data_blocks = split_blocks(data)
+    blocks = build_data_blocks(key, len(data_blocks))
+
+    out = feistel_network(f, blocks, expanded_key)
+    return (out ^ data_blocks).reshape(-1)
 
 
 def decrypt(data, key):
-    blocks = split_blocks(data)
-    expanded_key = expand_key(build_keys(key, len(blocks)))
-
-    data = inverse_feistel_network(f, split_blocks(data), expanded_key)
-    return data.reshape(-1)
+    return encrypt(data, key)
