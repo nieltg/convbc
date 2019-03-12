@@ -53,6 +53,7 @@ convo_view_shape = tuple(
 def build_window_blocks(hashes_data):
     data_blocks = hashes_data.reshape(-1, *convo_data_shape)
 
+    # Reference: https://stackoverflow.com/a/43087507
     view_shape = (len(hashes_data), ) + convo_view_shape
     view_strides = data_blocks.strides + data_blocks.strides[1:]
 
