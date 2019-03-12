@@ -3,8 +3,6 @@ import hashlib
 
 from joblib import Parallel, delayed
 
-md4 = hashlib.new('md4')
-
 
 def flatten2d(key):
     if len(key.shape) < 2:
@@ -17,10 +15,8 @@ def hash(flat_key):
     n_mid = len(flat_key) // 2
     key_data = flat_key.tobytes()
 
-    md4.update(key_data[:n_mid])
-    hash1 = md4.digest()
-    md4.update(key_data[n_mid:])
-    hash2 = md4.digest()
+    hash1 = hashlib.new('md4', key_data[:n_mid]).digest()
+    hash2 = hashlib.new('md4', key_data[n_mid:]).digest()
 
     hash_data = hash1 + hash2[:9]
     hash_kernel = hash2[-4:]
@@ -65,7 +61,8 @@ def convo2d(hashes_data, hashes_kernel):
     kernel_blocks = hashes_kernel.reshape(-1, 1, 1, *convo_kernel_shape)
     data_window_blocks = build_window_blocks(hashes_data)
 
-    out = np.sum(kernel_blocks * data_window_blocks, axis=(3, 4))
+    out = np.sum(
+        kernel_blocks * data_window_blocks, axis=(3, 4), dtype=np.uint8)
     return out.reshape(-1, 16)
 
 
@@ -97,7 +94,7 @@ def expand_key(key, n=24):
     side_shape = key.shape[:-1]
 
     data_blocks, kernel_blocks = hash_all(flatten2d(key))
-    out = np.empty((n, np.prod(side_shape + (1,)), 16), dtype=np.uint8)
+    out = np.empty((n, np.prod(side_shape + (1, )), 16), dtype=np.uint8)
 
     for i in range(n):
         convo_values = convo2d(data_blocks, kernel_blocks)
