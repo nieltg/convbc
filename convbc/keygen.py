@@ -31,8 +31,8 @@ def hash(flat_key):
 def hash_all(flat_keys):
     length = len(flat_keys)
 
-    hashes_data = np.empty((length, 25))
-    hashes_kernel = np.empty((length, 4))
+    hashes_data = np.empty((length, 25), dtype=np.uint8)
+    hashes_kernel = np.empty((length, 4), dtype=np.uint8)
 
     for i in range(0, length):
         hash_data, hash_kernel = hash(flat_keys[i])
@@ -96,13 +96,13 @@ def expand_key(key, n=24):
 
     side_shape = key.shape[:-1]
 
-    # hashes_data, hashes_kernel = hash_all(flatten2d(key))
-    # out = np.empty((n, np.prod(side_shape), 16), dtype=np.uint8)
+    data_blocks, kernel_blocks = hash_all(flatten2d(key))
+    out = np.empty((n, np.prod(side_shape + (1,)), 16), dtype=np.uint8)
 
-    # for i in range(n):
-    #     convo_values = convo2d(hashes_data, hashes_kernel)
-    #     out[i] = convo_values
+    for i in range(n):
+        convo_values = convo2d(data_blocks, kernel_blocks)
+        out[i] = convo_values
 
-    #     pad(convo_values, calculate_padding(n, padding_n_max))
+        data_blocks = data_blocks ^ pad(convo_values, n)
 
-    return np.zeros(side_shape + (n, 16))
+    return np.transpose(out, axes=(1, 0, 2)).reshape(side_shape + (n, 16))
