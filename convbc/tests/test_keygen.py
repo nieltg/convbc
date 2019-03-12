@@ -146,4 +146,4 @@ def test_expand_key_with_key_2d_array_and_n_1():
 
 def test_expand_key_with_key_3d_array_and_n_2():
     key = np.zeros((1, 2, 4), dtype=np.uint8)
-    assert keygen.expand_key(key, 2).shape == (1, 2, 2, 16)
+    assert keygen.expand_key(key, 2).shape == (2, 1, 2, 16)

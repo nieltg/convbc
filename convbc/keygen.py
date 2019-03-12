@@ -102,4 +102,4 @@ def expand_key(key, n=24):
 
         data_blocks = data_blocks ^ pad(convo_values, n)
 
-    return np.transpose(out, axes=(1, 0, 2)).reshape(side_shape + (n, 16))
+    return out.reshape((n, ) + side_shape + (16, ))
