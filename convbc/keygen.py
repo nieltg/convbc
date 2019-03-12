@@ -69,6 +69,10 @@ def convo2d(hashes_data, hashes_kernel):
     return out.reshape(-1, 16)
 
 
+def calculate_padding(n, stop=8):
+    return 0
+
+
 def expand_key(key, n=24):
     if key.shape[-1] % 2 != 0 or key.dtype != np.uint8:
         raise Exception()

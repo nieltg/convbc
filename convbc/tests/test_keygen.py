@@ -60,6 +60,10 @@ def test_convo2d_returns_correct_array_shape():
     assert result.shape == (2, 16)
 
 
+def test_calculate_padding_returns_0_if_n_0():
+    assert keygen.calculate_padding(0) == 0
+
+
 def test_expand_key_without_seed():
     with pytest.raises(TypeError):
         keygen.expand_key()
