@@ -68,6 +68,10 @@ def test_calculate_padding_returns_1_if_n_1():
     assert keygen.calculate_padding(1) == 1
 
 
+def test_calculate_padding_returns_6_if_n_8():
+    assert keygen.calculate_padding(8) == 6
+
+
 def test_expand_key_without_seed():
     with pytest.raises(TypeError):
         keygen.expand_key()
