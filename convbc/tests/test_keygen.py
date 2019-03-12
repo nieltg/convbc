@@ -84,6 +84,16 @@ def test_calculate_padding_returns_1_if_n_15():
     assert keygen.calculate_padding(15) == 1
 
 
+def test_pad_returns_correct_array_shape():
+    convo_values = np.zeros((1, 16), dtype=np.uint8)
+    assert keygen.pad(convo_values, 0).shape == (1, 25)
+
+
+def test_pad_returns_correct_array_shape_with_n_9():
+    convo_values = np.zeros((1, 16), dtype=np.uint8)
+    assert keygen.pad(convo_values, 9).shape == (1, 25)
+
+
 def test_expand_key_without_seed():
     with pytest.raises(TypeError):
         keygen.expand_key()

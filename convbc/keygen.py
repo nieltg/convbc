@@ -46,8 +46,8 @@ def hash_all(flat_keys):
 convo_data_shape = (5, 5)
 convo_kernel_shape = (2, 2)
 
-convo_view_shape = tuple(
-    np.subtract(convo_data_shape, convo_kernel_shape) + 1) + convo_kernel_shape
+convo_window_shape = np.subtract(convo_data_shape, convo_kernel_shape) + 1
+convo_view_shape = tuple(convo_window_shape) + convo_kernel_shape
 
 
 def build_window_blocks(hashes_data):
@@ -79,8 +79,30 @@ def calculate_padding(n, n_max=7):
         return n_max - unit
 
 
+padding_out_size = np.prod(convo_data_shape)
+padding_n_max = np.prod(convo_data_shape) - np.prod(convo_window_shape)
+
+
+def pad(convo_values, n):
+    n_pad = calculate_padding(n, padding_n_max)
+    n_pad_end = padding_out_size - convo_values.shape[1] - n_pad
+
+    return np.pad(convo_values, ((0, 0), (n_pad, n_pad_end)), mode='constant')
+
+
 def expand_key(key, n=24):
     if key.shape[-1] % 2 != 0 or key.dtype != np.uint8:
         raise Exception()
 
-    return np.zeros(key.shape[:-1] + (n, 16))
+    side_shape = key.shape[:-1]
+
+    # hashes_data, hashes_kernel = hash_all(flatten2d(key))
+    # out = np.empty((n, np.prod(side_shape), 16), dtype=np.uint8)
+
+    # for i in range(n):
+    #     convo_values = convo2d(hashes_data, hashes_kernel)
+    #     out[i] = convo_values
+
+    #     pad(convo_values, calculate_padding(n, padding_n_max))
+
+    return np.zeros(side_shape + (n, 16))
